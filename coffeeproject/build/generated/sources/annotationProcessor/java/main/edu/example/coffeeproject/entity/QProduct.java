@@ -27,7 +27,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final ComparablePath<java.util.UUID> productId = createComparable("productId", java.util.UUID.class);
+    public final NumberPath<Long> productId = createNumber("productId", Long.class);
 
     public final StringPath productName = createString("productName");
 
