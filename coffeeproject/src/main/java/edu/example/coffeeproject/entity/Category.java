@@ -6,3 +6,9 @@ public enum Category {
 
 
 // 커밋 테스트!!
+
+//git init
+//git config user.name "ObjectGipi"
+//git config user.email "sound.of.olga@gmail.com"
+//git add *
+//git commit -m "some init msg"
