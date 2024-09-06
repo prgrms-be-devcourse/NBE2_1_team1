@@ -5,12 +5,10 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
-@Table(name="tbl_product")
+@Table(name = "products")
 @Getter
 @ToString
 @NoArgsConstructor
@@ -19,28 +17,15 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+    @Column(unique = true)
     private String productName;
-    @Enumerated(EnumType.STRING)
-    private Category category;
     private int price;
     private String description;
+
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
-
-    public void changeProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void changePrice(int price) {
-        this.price = price;
-    }
-
-    public void changeDescription(String description) {
-        this.description = description;
-    }
 }

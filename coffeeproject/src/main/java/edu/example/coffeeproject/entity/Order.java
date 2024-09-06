@@ -2,17 +2,21 @@ package edu.example.coffeeproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.SortedSet;
-import java.util.TreeSet;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="tbl_order")
+@Table(name="order_items")
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +24,13 @@ public class Order {
     private String email;
     private String address;
     private String postcode;
+    private String orderStatus;
 
-    private SortedSet<OrderItem> orderItems = new TreeSet<>();
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-//  TEST
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

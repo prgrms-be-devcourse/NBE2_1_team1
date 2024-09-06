@@ -22,17 +22,19 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public static final QOrderItem orderItem = new QOrderItem("orderItem");
 
-    public final EnumPath<Category> category = createEnum("category", Category.class);
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final QOrder order;
 
-    public final NumberPath<Integer> orderId = createNumber("orderId", Integer.class);
+    public final NumberPath<Long> orderItemId = createNumber("orderItemId", Long.class);
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final QProduct product;
+    public final NumberPath<Long> productId = createNumber("productId", Long.class);
 
     public final NumberPath<Integer> quantity = createNumber("quantity", Integer.class);
+
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public QOrderItem(String variable) {
         this(OrderItem.class, forVariable(variable), INITS);
@@ -53,7 +55,6 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
     public QOrderItem(Class<? extends OrderItem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.order = inits.isInitialized("order") ? new QOrder(forProperty("order")) : null;
-        this.product = inits.isInitialized("product") ? new QProduct(forProperty("product")) : null;
     }
 
 }

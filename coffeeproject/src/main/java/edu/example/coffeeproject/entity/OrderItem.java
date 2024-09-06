@@ -2,31 +2,33 @@ package edu.example.coffeeproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CollectionIdJavaType;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.time.LocalDateTime;
 
 @Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name="orders")
 @Getter
 @ToString
-public class OrderItem implements Comparable<OrderItem> {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EntityListeners(AuditingEntityListener.class)
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
-    @ManyToOne
-    @JoinColumn(name="product_id")
-    private Product product;
-    @ManyToOne
-    @JoinColumn(name="order_id")
-    private Order order;
-    private Category category;
+    private Long orderItemId;
+    private Long productId;
     private int price;
     private int quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "orderId", nullable = false)
+    private Order order;
 
-    @Override
-    public int compareTo(OrderItem o) {
-        return this.orderId - o.orderId;
-    }
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }
