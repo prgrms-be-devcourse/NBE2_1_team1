@@ -6,6 +6,7 @@ public enum Category {
 
 
 // 커밋 테스트!!
+// 커밋 테스트2!!
 
 //git init
 //git config user.name "ObjectGipi"
