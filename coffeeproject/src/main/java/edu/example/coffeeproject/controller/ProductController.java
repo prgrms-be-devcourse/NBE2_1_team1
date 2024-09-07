@@ -2,7 +2,7 @@ package edu.example.coffeeproject.controller;
 
 
 import edu.example.coffeeproject.entity.Product;
-import edu.example.coffeeproject.service.TestService;
+import edu.example.coffeeproject.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +13,11 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    TestService testService;
+    ProductService productService;
 
-    @GetMapping("/test")
+    @GetMapping("/products/list")
     public List<Product> getAllProducts() {
-        List<Product> productList = testService.getAllProducts();
+        List<Product> productList = productService.getAllProducts();
         return productList;
     }
 }
