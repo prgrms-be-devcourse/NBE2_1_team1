@@ -1,11 +1,9 @@
 package edu.example.coffeeproject.controller;
 
-
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -22,8 +20,22 @@ public class ProductController {
 
     @GetMapping
     public List<Product> getAllProducts() {
-        List<Product> productList = productService.getAllProducts();
-        return productList;
+        return productService.getAllProducts();
+    }
+
+    @GetMapping("/{productId}")
+    public Product getProductById(@PathVariable Long productId) {
+        return productService.getProductById(productId);
+    }
+
+    @PutMapping("/{productId}")
+    public Product updateProduct(@PathVariable Long productId, @RequestBody Product product) {
+        Product updatedProduct = productService.updateProduct(productId, product);
+        if (updatedProduct != null) {
+            return updatedProduct;
+        } else {
+            throw new RuntimeException("Product with ID " + productId + " not found");
+        }
     }
 
     @DeleteMapping("/{productId}")

@@ -8,8 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "products")
+@Table(name="products")
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
