@@ -1,8 +1,9 @@
 package edu.example.coffeeproject.controller;
 
 import edu.example.coffeeproject.entity.Product;
+import edu.example.coffeeproject.exception.ProductNotFoundException;
 import edu.example.coffeeproject.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -10,15 +11,21 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
-    @Autowired
-    ProductService productService;
+//    @Autowired
+//    ProductService productService;
+
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @PostMapping("/create")
     public Product createProduct(@RequestBody Product product) {
         return productService.saveProduct(product);
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
@@ -34,7 +41,7 @@ public class ProductController {
         if (updatedProduct != null) {
             return updatedProduct;
         } else {
-            throw new RuntimeException("Product with ID " + productId + " not found");
+            throw new ProductNotFoundException(productId);
         }
     }
 

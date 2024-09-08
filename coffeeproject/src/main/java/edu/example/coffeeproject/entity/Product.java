@@ -24,6 +24,8 @@ public class Product {
     private String productName;
     private int price;
     private String description;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @CreatedDate
     private LocalDateTime createdAt;
