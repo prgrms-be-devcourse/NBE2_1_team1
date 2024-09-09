@@ -29,7 +29,7 @@ public class Order {
     @OneToMany
     @JoinColumn(name = "order_id")
     @Builder.Default
-    private SortedSet<OrderItem> orderItems = new TreeSet<>();  // 주문 상품 목록 -> 이거 맞는지?
+    private SortedSet<OrderItem> orderItems = new TreeSet<>();  // 주문 상품 목록
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;     // 주문 상태 (enum으로 정의)
