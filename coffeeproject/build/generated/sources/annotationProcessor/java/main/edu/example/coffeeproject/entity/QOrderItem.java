@@ -22,13 +22,13 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public static final QOrderItem orderItem = new QOrderItem("orderItem");
 
-    public final EnumPath<Category> category = createEnum("category", Category.class);
+    public final EnumPath<edu.example.coffeeproject.entity.enums.Category> category = createEnum("category", edu.example.coffeeproject.entity.enums.Category.class);
 
     public final QOrder order;
 
-    public final NumberPath<Integer> orderId = createNumber("orderId", Integer.class);
+    public final NumberPath<Long> orderItemId = createNumber("orderItemId", Long.class);
 
-    public final NumberPath<Integer> price = createNumber("price", Integer.class);
+    public final NumberPath<Long> price = createNumber("price", Long.class);
 
     public final QProduct product;
 

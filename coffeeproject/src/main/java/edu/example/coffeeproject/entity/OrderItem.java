@@ -1,32 +1,37 @@
 package edu.example.coffeeproject.entity;
 
+import edu.example.coffeeproject.entity.enums.Category;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CollectionIdJavaType;
 
 @Entity
+@Getter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@ToString
-public class OrderItem implements Comparable<OrderItem> {
+@Table(name = "tbl_order_item")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private Long orderItemId;
+
     @ManyToOne
-    @JoinColumn(name="product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
+
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private Order order;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
-    private int price;
+
+    private Long price;
     private int quantity;
 
 
-    @Override
-    public int compareTo(OrderItem o) {
-        return this.orderId - o.orderId;
+    public Long totalPrice() {
+        return this.price * this.quantity;
     }
 }

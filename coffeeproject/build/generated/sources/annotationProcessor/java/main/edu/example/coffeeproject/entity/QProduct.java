@@ -19,9 +19,9 @@ public class QProduct extends EntityPathBase<Product> {
 
     public static final QProduct product = new QProduct("product");
 
-    public final EnumPath<Category> category = createEnum("category", Category.class);
+    public final EnumPath<edu.example.coffeeproject.entity.enums.Category> category = createEnum("category", edu.example.coffeeproject.entity.enums.Category.class);
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
 
     public final StringPath description = createString("description");
 
@@ -31,7 +31,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath productName = createString("productName");
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> updateDate = createDateTime("updateDate", java.time.LocalDateTime.class);
 
     public QProduct(String variable) {
         super(Product.class, forVariable(variable));

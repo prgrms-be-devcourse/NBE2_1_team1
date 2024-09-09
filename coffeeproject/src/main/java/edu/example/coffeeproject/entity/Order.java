@@ -1,29 +1,34 @@
 package edu.example.coffeeproject.entity;
 
+import edu.example.coffeeproject.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="tbl_order")
 @Getter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tbl_order")
+@EntityListeners(value = {AuditingEntityListener.class})
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+
     private String email;
     private String address;
     private String postcode;
 
-    private SortedSet<OrderItem> orderItems = new TreeSet<>();
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
 }
