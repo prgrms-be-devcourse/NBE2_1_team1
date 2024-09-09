@@ -50,4 +50,8 @@ public class Product {
         this.description = description;
     }
 
+    public void changeCategory(String categoryName) {
+        this.category = Category.valueOf(categoryName);
+    }
+
 }

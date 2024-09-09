@@ -3,8 +3,11 @@ package edu.example.coffeeproject.entity;
 import edu.example.coffeeproject.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -34,7 +37,9 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;     // 주문 상태 (enum으로 정의)
 
-//    @CreatedDate
-//    private LocalDateTime orderDate;     // 주문 일시
+    @CreatedDate
+    private LocalDateTime createAt;     // 주문 일시 작성
+    @LastModifiedDate
+    private LocalDateTime updateAt;      // 주문 일시 수정
 
 }

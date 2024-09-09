@@ -35,7 +35,6 @@ public class OrderItem {
     // 수량에 따른 가격 계산 (가격 x 수량)
     public int totalPrice() {
         return this.price * this.quantity;
-
     }
 
 }

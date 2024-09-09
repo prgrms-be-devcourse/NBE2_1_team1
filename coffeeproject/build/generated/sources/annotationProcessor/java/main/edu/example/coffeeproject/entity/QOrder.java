@@ -22,6 +22,8 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final StringPath address = createString("address");
 
+    public final DateTimePath<java.time.LocalDateTime> createAt = createDateTime("createAt", java.time.LocalDateTime.class);
+
     public final StringPath email = createString("email");
 
     public final NumberPath<Long> orderId = createNumber("orderId", Long.class);
@@ -31,6 +33,8 @@ public class QOrder extends EntityPathBase<Order> {
     public final EnumPath<edu.example.coffeeproject.entity.enums.OrderStatus> orderStatus = createEnum("orderStatus", edu.example.coffeeproject.entity.enums.OrderStatus.class);
 
     public final StringPath postcode = createString("postcode");
+
+    public final DateTimePath<java.time.LocalDateTime> updateAt = createDateTime("updateAt", java.time.LocalDateTime.class);
 
     public QOrder(String variable) {
         super(Order.class, forVariable(variable));
