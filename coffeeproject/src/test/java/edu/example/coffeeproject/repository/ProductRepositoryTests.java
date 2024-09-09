@@ -1,6 +1,7 @@
 package edu.example.coffeeproject.repository;
 
 import edu.example.coffeeproject.dto.ProductDTO;
+import edu.example.coffeeproject.dto.ProductListDTO;
 import edu.example.coffeeproject.entity.Product;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -44,9 +45,19 @@ public class ProductRepositoryTests {
     }
 
     @Test   //@Query 테스트
-    public void 전체_목록_보기() {
-        List<Product> productList = productRepository.findAll();
+    public void testList() {
+        Pageable pageable = PageRequest.of(0, //페이지 번호 - 첫번째 페이지는 0부터 시작
+                3 //한 페이지 게시물의 숫자
+                , Sort.by("productId").descending());
 
+        Page<ProductListDTO> productList = productRepository.list(pageable);
+        assertNotNull(productList);
+        assertEquals(7, productList.getTotalElements());  //전체 게시물 수
+        assertEquals(3, productList.getTotalPages());  //총 페이지 수 10개
+        assertEquals(0, productList.getNumber());     //현재 페이지 번호 0
+        assertEquals(3, productList.getSize());    //한 페이지 게시물 수 10개
+
+        productList.getContent().forEach(System.out::println);
     }
 
 

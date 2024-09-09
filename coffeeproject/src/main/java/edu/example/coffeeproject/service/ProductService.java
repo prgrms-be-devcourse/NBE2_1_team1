@@ -2,6 +2,7 @@ package edu.example.coffeeproject.service;
 
 import edu.example.coffeeproject.dto.PageRequestDTO;
 import edu.example.coffeeproject.dto.ProductDTO;
+import edu.example.coffeeproject.dto.ProductListDTO;
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.exception.ProductException;
 import edu.example.coffeeproject.repository.ProductRepository;
@@ -32,16 +33,16 @@ public class ProductService {
 
     }
 
-//    public Page<ProductDTO> getList(PageRequestDTO pageRequestDTO) {//상품 목록
-//        try {
-//            Sort sort = Sort.by("pno").descending();
-//            Pageable pageable = pageRequestDTO.getPageable(sort);
-//            Page<Product> productPage =  productRepository.findAll(pageable);
-//
-//        }catch (Exception e) {
-//            log.error("--- " + e.getMessage());
-//            throw ProductException.NOT_FETCHED.get();  //예외가 발생한 경우 Product NOT_FETCHED 메시지로 예외 발생시키기
-//        }
-//    }
+    public Page<ProductListDTO> getList(PageRequestDTO pageRequestDTO) {//상품 목록
+        try {
+            Sort sort = Sort.by("productId").descending();
+            Pageable pageable = pageRequestDTO.getPageable(sort);
+            return productRepository.list(pageable);
+
+        }catch (Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ProductException.NOT_FETCHED.get();  //예외가 발생한 경우 Product NOT_FETCHED 메시지로 예외 발생시키기
+        }
+    }
 }
 
