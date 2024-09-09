@@ -28,7 +28,7 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final SetPath<OrderItem, QOrderItem> orderItems = this.<OrderItem, QOrderItem>createSet("orderItems", OrderItem.class, QOrderItem.class, PathInits.DIRECT2);
 
-    public final EnumPath<OrderStatus> orderStatus = createEnum("orderStatus", OrderStatus.class);
+    public final EnumPath<edu.example.coffeeproject.entity.enums.OrderStatus> orderStatus = createEnum("orderStatus", edu.example.coffeeproject.entity.enums.OrderStatus.class);
 
     public final StringPath postcode = createString("postcode");
 

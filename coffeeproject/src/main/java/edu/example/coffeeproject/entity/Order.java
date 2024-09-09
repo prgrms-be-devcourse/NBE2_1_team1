@@ -1,7 +1,9 @@
 package edu.example.coffeeproject.entity;
 
+import edu.example.coffeeproject.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -13,17 +15,26 @@ import java.util.TreeSet;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
-    private String email;
-    private String address;
-    private String postcode;
+    private Long orderId;                // 주문ID
 
-    private SortedSet<OrderItem> orderItems = new TreeSet<>();
+    private String email;                // 주문자 이메일
+    private String address;              // 배송지 주소
+    private String postcode;             // 배송지 우편번호
+
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    @Builder.Default
+    private SortedSet<OrderItem> orderItems = new TreeSet<>();  // 주문 상품 목록 -> 이거 맞는지?
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus;     // 주문 상태 (enum으로 정의)
+
+//    @CreatedDate
+//    private LocalDateTime orderDate;     // 주문 일시
 
 }
