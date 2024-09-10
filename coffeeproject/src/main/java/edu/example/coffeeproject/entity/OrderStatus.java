@@ -3,4 +3,4 @@ package edu.example.coffeeproject.entity;
 public enum OrderStatus {
     YES,
     NO
-}//수정 테스트
+}//건태 브랜치에서 수정
