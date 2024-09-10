@@ -1,17 +1,15 @@
 package edu.example.coffeeproject.service;
 
+import edu.example.coffeeproject.dto.ProductDTO;
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.exception.ProductNotFoundException;
 import edu.example.coffeeproject.repository.ProductRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-
-//    @Autowired
-//    private ProductRepository productRepository;
 
     private final ProductRepository productRepository;
 
@@ -19,30 +17,42 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public ProductDTO saveProduct(ProductDTO productDTO) {
+        Product product = productDTO.toEntity();
+        Product savedProduct = productRepository.save(product);
+        return ProductDTO.fromEntity(savedProduct);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(ProductDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId).orElse(null);
+    public ProductDTO getProductById(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+        return ProductDTO.fromEntity(product);
     }
 
-    public Product updateProduct(Long productId, Product productDetails) {
-        Product product = getProductById(productId);
-        if (product == null) {
-            throw new ProductNotFoundException(productId);
-        }
-        product.setProductName(productDetails.getProductName());
-        product.setPrice(productDetails.getPrice());
-        product.setDescription(productDetails.getDescription());
-        return productRepository.save(product);
+    public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+
+        existingProduct.setProductName(productDTO.getProductName());
+        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setDescription(productDTO.getDescription());
+        existingProduct.setCategory(productDTO.getCategory());
+
+        Product updatedProduct = productRepository.save(existingProduct);
+        return ProductDTO.fromEntity(updatedProduct);
     }
 
     public void deleteProduct(Long productId) {
+        if (!productRepository.existsById(productId)) {
+            throw new ProductNotFoundException(productId);
+        }
         productRepository.deleteById(productId);
     }
 }

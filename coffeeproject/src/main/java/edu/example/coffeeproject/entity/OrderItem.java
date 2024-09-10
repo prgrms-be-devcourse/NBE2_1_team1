@@ -1,5 +1,6 @@
 package edu.example.coffeeproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,8 +9,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="orders")
+@Table(name="order_items")
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,12 +21,19 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderItemId;
+    @Column(nullable = false)
     private Long productId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category category;
+    @Column(nullable = false)
     private int price;
+    @Column(nullable = false)
     private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "orderId", nullable = false)
+    @JsonIgnore
     private Order order;
 
     @CreatedDate

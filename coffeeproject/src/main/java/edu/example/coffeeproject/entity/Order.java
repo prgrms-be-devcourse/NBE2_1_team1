@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="order_items")
+@Table(name="orders")
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,11 +22,15 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String address;
+    @Column(nullable = false)
     private String postcode;
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    @Column(columnDefinition = "ENUM('ACCEPTED','CANCELLED','PAYMENT_CONFIRMED','PENDING','READY_FOR_DELIVERY','SETTLED','SHIPPED') DEFAULT 'PENDING'")
+    private OrderStatus orderStatus = OrderStatus.PENDING;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -34,4 +39,11 @@ public class Order {
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.orderStatus == null) {
+            this.orderStatus = OrderStatus.PENDING;
+        }
+    }
 }
