@@ -3,6 +3,7 @@ package edu.example.coffeeproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -21,9 +22,26 @@ public class Order {
     private String address;
     private String postcode;
 
-    private SortedSet<OrderItem> orderItems = new TreeSet<>();
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    private SortedSet<OrderItem> orderItems;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changeAddress(String address) {
+        this.address = address;
+    }
+
+    public void changePostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public void changeOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }

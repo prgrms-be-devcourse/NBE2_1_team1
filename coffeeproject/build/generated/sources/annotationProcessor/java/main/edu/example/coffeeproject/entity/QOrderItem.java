@@ -13,8 +13,8 @@ import com.querydsl.core.types.dsl.PathInits;
 /**
  * QOrderItem is a Querydsl query type for OrderItem
  */
-@Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
-public class QOrderItem extends BeanPath<OrderItem> {
+@Generated("com.querydsl.codegen.DefaultEntitySerializer")
+public class QOrderItem extends EntityPathBase<OrderItem> {
 
     private static final long serialVersionUID = -1613561005L;
 
@@ -26,7 +26,7 @@ public class QOrderItem extends BeanPath<OrderItem> {
 
     public final QOrder order;
 
-    public final NumberPath<Integer> orderId = createNumber("orderId", Integer.class);
+    public final NumberPath<Long> orderItemId = createNumber("orderItemId", Long.class);
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 

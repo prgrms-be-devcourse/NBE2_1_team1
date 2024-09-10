@@ -19,7 +19,7 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
     private String productName;
     @Enumerated(EnumType.STRING)
@@ -42,5 +42,9 @@ public class Product {
 
     public void changeDescription(String description) {
         this.description = description;
+    }
+
+    public void changeCategory(String categoryName) {
+        this.category = Category.valueOf(categoryName);
     }
 }
