@@ -45,6 +45,10 @@ public class Product {
     }
 
     public void changeCategory(String categoryName) {
-        this.category = Category.valueOf(categoryName);
+        try {
+            this.category = Category.valueOf(categoryName);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid category: " + categoryName);
+        }
     }
 }

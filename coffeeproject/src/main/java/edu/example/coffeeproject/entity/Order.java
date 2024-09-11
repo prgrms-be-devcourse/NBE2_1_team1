@@ -20,11 +20,10 @@ public class Order {
     private Long orderId;
     private String email;
     private String address;
-    private String postcode;
+    private String postCode;
 
-    @OneToMany
-    @JoinColumn(name = "order_id")
-    private SortedSet<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
+    private List<OrderItem> orderItems;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
@@ -37,11 +36,15 @@ public class Order {
         this.address = address;
     }
 
-    public void changePostcode(String postcode) {
-        this.postcode = postcode;
+    public void changePostCode(String postCode) {
+        this.postCode = postCode;
     }
 
     public void changeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public void changeOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

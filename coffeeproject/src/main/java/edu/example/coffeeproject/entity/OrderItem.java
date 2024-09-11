@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CollectionIdJavaType;
 
 @Entity
-@Table(name = "tbl_order_item")
+@Table(name = "tbl_order_item", indexes=@Index(columnList = "order_id"))
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,6 +27,17 @@ public class OrderItem {
     @Enumerated(EnumType.STRING)
     private Category category;
     private int price;
+
     private int quantity;
 
+//    private int sumPrice;
+
+
+    public void changeQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int sumPrice(int price, int quantity) {
+        return price * quantity;
+    }
 }

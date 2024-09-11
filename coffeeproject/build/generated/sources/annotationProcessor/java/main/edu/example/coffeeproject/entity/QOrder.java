@@ -26,11 +26,11 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final NumberPath<Long> orderId = createNumber("orderId", Long.class);
 
-    public final SetPath<OrderItem, QOrderItem> orderItems = this.<OrderItem, QOrderItem>createSet("orderItems", OrderItem.class, QOrderItem.class, PathInits.DIRECT2);
+    public final ListPath<OrderItem, QOrderItem> orderItems = this.<OrderItem, QOrderItem>createList("orderItems", OrderItem.class, QOrderItem.class, PathInits.DIRECT2);
 
     public final EnumPath<OrderStatus> orderStatus = createEnum("orderStatus", OrderStatus.class);
 
-    public final StringPath postcode = createString("postcode");
+    public final StringPath postCode = createString("postCode");
 
     public QOrder(String variable) {
         super(Order.class, forVariable(variable));

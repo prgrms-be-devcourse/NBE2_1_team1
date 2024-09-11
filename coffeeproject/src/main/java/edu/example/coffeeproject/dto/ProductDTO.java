@@ -3,6 +3,7 @@ package edu.example.coffeeproject.dto;
 import edu.example.coffeeproject.entity.Category;
 import edu.example.coffeeproject.entity.Product;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
