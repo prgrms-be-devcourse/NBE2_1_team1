@@ -55,7 +55,7 @@ public class OrderDTO {
                 .email(email)
                 .address(address)
                 .postCode(postCode)
-                .orderStatus(OrderStatus.ACCEPTED)
+                .orderStatus(OrderStatus.NO)
                 .build();
 
         orderRepository.save(order);
