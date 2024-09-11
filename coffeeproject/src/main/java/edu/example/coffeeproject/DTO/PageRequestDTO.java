@@ -1,4 +1,4 @@
-package edu.example.coffeeproject.dto;
+package edu.example.coffeeproject.DTO;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

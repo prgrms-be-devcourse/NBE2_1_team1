@@ -2,7 +2,6 @@ package edu.example.coffeeproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CollectionIdJavaType;
 
 @Entity
 @Table(name = "tbl_order_item")
@@ -17,15 +16,16 @@ public class OrderItem {
     private Long orderItemId;
 
     @ManyToOne
-    @JoinColumn(name="product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
     private int price;
     private int quantity;
 

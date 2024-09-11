@@ -1,7 +1,6 @@
 package edu.example.coffeeproject.repository;
 
-import edu.example.coffeeproject.dto.ProductDTO;
-import edu.example.coffeeproject.dto.ProductListDTO;
+import edu.example.coffeeproject.DTO.ProductResponseDTO;
 import edu.example.coffeeproject.entity.Product;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.util.List;
 import java.util.stream.IntStream;
 
 import static edu.example.coffeeproject.entity.Category.COFFEE_BEAN_PACKAGE;
@@ -50,7 +48,7 @@ public class ProductRepositoryTests {
                 3 //한 페이지 게시물의 숫자
                 , Sort.by("productId").descending());
 
-        Page<ProductListDTO> productList = productRepository.list(pageable);
+        Page<ProductResponseDTO> productList = productRepository.list(pageable);
         assertNotNull(productList);
         assertEquals(7, productList.getTotalElements());  //전체 게시물 수
         assertEquals(3, productList.getTotalPages());  //총 페이지 수 10개

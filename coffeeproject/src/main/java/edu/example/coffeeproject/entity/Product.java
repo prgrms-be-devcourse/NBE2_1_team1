@@ -22,8 +22,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
     private String productName;
+
     @Enumerated(EnumType.STRING)
     private Category category;
+
     private int price;
     private String description;
     @CreatedDate
@@ -47,4 +49,5 @@ public class Product {
     public void changeCategory(String categoryName) {
         this.category = Category.valueOf(categoryName);
     }
-}
+
+    }
