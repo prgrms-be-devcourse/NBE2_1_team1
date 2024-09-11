@@ -1,6 +1,6 @@
 package edu.example.coffeeproject.entity;
 
 public enum OrderStatus {
-    YES,
-    NO
+    ORDER_PREPARING,
+    ORDER_COMPLETED
 }

@@ -1,7 +1,8 @@
 package edu.example.coffeeproject.controller_api;
 
-import edu.example.coffeeproject.DTO.ProductRequestDTO;
-import edu.example.coffeeproject.DTO.ProductResponseDTO;
+import edu.example.coffeeproject.DTO.request.OrderRequestDTO;
+import edu.example.coffeeproject.DTO.response.OrderResponseDTO;
+import edu.example.coffeeproject.service.OrderService;
 import edu.example.coffeeproject.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,84 +15,46 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/products")
+@RequestMapping("api/v1/orders")
 @Log4j2
 public class OrderController {
-    private final ProductService productService;
 
+    private final OrderService orderService;
+
+    // 주문 등록
     @PostMapping("/create")
-    public ResponseEntity<ProductResponseDTO> addProduct(
-            @Validated @RequestBody ProductRequestDTO productRequestDTO) {
-
-        // 클라이언트가 보낸 데이터 로그에 출력
-        log.info("요청받은 productRequestDTO(상품 데이터) : " + productRequestDTO);
-
-        // 서버가 클라이언트에게 보낸 데이터 로그에 출력
-        // 로그 찍어보기 위해서 일부러 productResponseDTO 변수에 저장
-        ProductResponseDTO productResponseDTO  = productService.addProduct(productRequestDTO);
-        log.info("반환된 productResponseDTO(DB의 상품 데이터) : " + productResponseDTO);
-
-        return ResponseEntity.ok(productResponseDTO);
+    public ResponseEntity<OrderResponseDTO> createOrder(@Validated @RequestBody OrderRequestDTO orderRequestDTO) {
+        return ResponseEntity.ok(orderService.addOrder(orderRequestDTO));
     }
 
-    @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> getProduct(
-            @Validated @PathVariable Long productId) {
-
-        log.info("요청받은 productId(상품 아이디) : " + productId);
-
-        ProductResponseDTO productResponseDTO = (productService.readProduct(productId));
-        log.info("반환된 productResponseDTO(DB의 상품 데이터) : " + productResponseDTO);
-
-        return ResponseEntity.ok(productResponseDTO);
+    // 주문 조회
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponseDTO> getOrder(@Validated @PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.readOrder(orderId));
     }
 
-    @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> modifyProduct(
-            @Validated @PathVariable Long productId,
-            @RequestBody ProductRequestDTO productRequestDTO) {
-
-        log.info("요청받은 수정 사항 productRequestDTO : " + productRequestDTO);
-        log.info("요청받은 수정 productId : " + productId);
-
-        ProductResponseDTO productResponseDTO = productService.modifyProduct(productId, productRequestDTO);
-
-        log.info("수정 완료된 productResponseDTO : " + productResponseDTO);
-
-        return ResponseEntity.ok(productResponseDTO);
+    // 주문 변경
+    @PutMapping("/{orderId}")
+    public ResponseEntity<OrderResponseDTO> updateOrder(
+            @PathVariable Long orderId,
+            @Validated @RequestBody OrderRequestDTO orderRequestDTO) {
+        return ResponseEntity.ok(orderService.updateOrder(orderId, orderRequestDTO));
     }
 
-    @DeleteMapping("/{productId}")
-    public ResponseEntity<Map<String, String>> deleteProduct(@Validated @PathVariable Long productId) {
-        ProductResponseDTO productResponseDTO = productService.readProduct(productId);
+    // 주문 삭제
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Map<String, String>> deleteOrder(@Validated @PathVariable Long orderId) {
+        orderService.deleteOrder(orderId);
 
-        if (productResponseDTO != null) {
-            productService.removeProduct(productId);
-            log.info("삭제된 productResponseDTO : " + productResponseDTO);
-            return ResponseEntity.ok(Map.of("delete result", "성공"));
-        }
-
-        // 500 에러에 막혀서 해당 결과는 나오지 않음(NoSuchElementException) -> 예외처리 필요
-        // Map으로 반환하나 그냥 String으로 반환하나 비슷한 것 같은데??
         return ResponseEntity.ok(Map.of("delete result ", "실패"));
     }
 
-    @GetMapping("/products")
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-
-        List<ProductResponseDTO> productResponseDTOList = productService.readAllProducts();
-        log.info("DB로부터 반환된 productResponseDTOList" + productResponseDTOList);
-
-        return ResponseEntity.ok(productResponseDTOList);
+    // 전체 주문 조회
+    @GetMapping("/List")
+    public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
+        return ResponseEntity.ok(orderService.readAllOrders());
     }
 
+    // 주문 페이징
+
 }
-
-
-    // 상품 페이지(페이징)
-//    @GetMapping("/list")
-//    public ResponseEntity<Page<ProductListDTO>> getList(@ModelAttribute @Validated PageRequestDTO pageRequestDTO) {
-//        log.info("getList -----" + pageRequestDTO);
-//
-//        return ResponseEntity.ok(productService.getList(pageRequestDTO));
-//    }

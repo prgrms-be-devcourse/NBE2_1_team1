@@ -12,7 +12,6 @@ import java.util.UUID;
 @Entity
 @Table(name="tbl_product")
 @Getter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,15 +20,25 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+
+    @Column(nullable = false)
     private String productName;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Category category;
+//    @Builder.Default -> 상품 등록할 때 필수 입력 사항이라 필요 X
+    private Category category = Category.COFFEE_BEAN_PACKAGE;
 
+    @Column(nullable = false)
     private int price;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
+
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
@@ -46,8 +55,8 @@ public class Product {
         this.description = description;
     }
 
-    public void changeCategory(String categoryName) {
-        this.category = Category.valueOf(categoryName);
+    public void changeCategory(Category category) {
+        this.category = category;
     }
 
     }

@@ -1,6 +1,6 @@
 package edu.example.coffeeproject.repository;
 
-import edu.example.coffeeproject.DTO.ProductResponseDTO;
+import edu.example.coffeeproject.DTO.response.ProductResponseDTO;
 import edu.example.coffeeproject.entity.Product;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;

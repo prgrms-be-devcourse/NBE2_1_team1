@@ -1,14 +1,12 @@
 package edu.example.coffeeproject.service;
 
-import edu.example.coffeeproject.DTO.ProductRequestDTO;
-import edu.example.coffeeproject.DTO.ProductResponseDTO;
+import edu.example.coffeeproject.DTO.request.ProductRequestDTO;
+import edu.example.coffeeproject.DTO.response.ProductResponseDTO;
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.mapper.ProductMapper;
 import edu.example.coffeeproject.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,8 +60,6 @@ public class ProductService {
         foundProduct.changeCategory(productRequestDTO.getCategory());
         foundProduct.changePrice(productRequestDTO.getPrice());
         foundProduct.changeDescription(productRequestDTO.getDescription());
-            // 카테고리는 코드를 지우지 않는 이상 무조건 값을 써야함
-            // 이유 공부 + 예외 처리, 다른 값들은 비워 놓으면 안되도록 처리
 
         // 요청한 데이터로 수정한 product 엔티티를 productResponseDTO로 변경 후, 반환
         return ProductMapper.toProductResponseDTO(foundProduct);

@@ -1,9 +1,13 @@
 package edu.example.coffeeproject.service;
 
-import edu.example.coffeeproject.DTO.ProductRequestDTO;
-import edu.example.coffeeproject.DTO.ProductResponseDTO;
+import edu.example.coffeeproject.DTO.request.OrderRequestDTO;
+import edu.example.coffeeproject.DTO.response.OrderResponseDTO;
+import edu.example.coffeeproject.entity.Order;
+import edu.example.coffeeproject.entity.OrderItem;
 import edu.example.coffeeproject.entity.Product;
-import edu.example.coffeeproject.mapper.ProductMapper;
+import edu.example.coffeeproject.mapper.OrderItemMapper;
+import edu.example.coffeeproject.mapper.OrderMapper;
+import edu.example.coffeeproject.repository.OrderRepository;
 import edu.example.coffeeproject.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,99 +25,82 @@ import java.util.Optional;
 public class OrderService {
 
     private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
-    // 상품 등록
-    public ProductResponseDTO addProduct(ProductRequestDTO productRequestDTO) {
+    // 주문 등록
+    public OrderResponseDTO addOrder(OrderRequestDTO orderRequestDTO) {
+        List<OrderItem> orderItems = orderRequestDTO.getOrderItems().stream()
+                .map(orderItemRequestDTO -> {
+                    Optional<Product> product = productRepository.findById(orderItemRequestDTO.getProductId());
+                    Product getProduct = product.get(); //  Optional 벗기는 것은 나중에 예외처리로 하기
+                    return OrderItemMapper.toOrderItemEntity(orderItemRequestDTO, getProduct);
+                }).collect(Collectors.toList());
 
-        // ProductRequestDTO -> Entity
-        // Mapper는 static이라서 아무 제약 없이 사용 가능
-        Product product = ProductMapper.toProductEntity(productRequestDTO);
+        Order order = OrderMapper.toOrderEntity(orderRequestDTO, orderItems);
+        orderItems.forEach(orderItem -> orderItem.setOrder(order));
+        // 각 OrderItem에 Order 필드 지정
+        // orderitem에 setter 어노테이션 추가
 
-        // JPA 기본 메서드 save() -> 실질적으로 DB에 저장
-        productRepository.save(product);
-
-        // 실질적으로 DB에 저장된 데이터(product)를 매개변수로 받아,
-        // Entity -> oProductResponseDTO
-        return ProductMapper.toProductResponseDTO(product);
-
+        Order savedOrder = orderRepository.save(order);
+        return OrderMapper.toOrderResponseDTO(savedOrder);
     }
 
-    // 상품 조회
-    public ProductResponseDTO readProduct(Long productId) {
-        Optional<Product> product = productRepository.findById(productId);
-        return ProductMapper.toProductResponseDTO(product.get());
+    // 주문 조회
+    public OrderResponseDTO readOrder(Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        Order getOrder = order.get();
+        return OrderMapper.toOrderResponseDTO(getOrder);
     }
 
-    // 상품 수정
-    public ProductResponseDTO modifyProduct(Long productId, ProductRequestDTO productRequestDTO) {
+    // 주문 변경
+    public OrderResponseDTO updateOrder(Long orderId, OrderRequestDTO orderRequestDTO) {
 
-        // 클라이언트에게 전달 받은 productId를 매개변수로
-        // JPA 기본 메서드 findById를 사용하여 해당 컬럼을 product에 저장
-        Optional<Product> product = productRepository.findById(productId);
+        Optional<Order> order = orderRepository.findById(orderId);
+        Order getOrder = order.get();
 
-        // Optional을 .get()으로 벗겨서 foundProduct에 저장
-        // -> 자유로운 Product 객체가 됨(엔티티)
-        Product foundProduct = product.get();
-
-        // 요청한 데이터에서(productRequestDTO) get해서
-        // product 엔티티의 change 메서드로 실질적인 DB 데이터(foundproduct) 변경
-        foundProduct.changeProductName(productRequestDTO.getProductName());
-        foundProduct.changeCategory(productRequestDTO.getCategory());
-        foundProduct.changePrice(productRequestDTO.getPrice());
-        foundProduct.changeDescription(productRequestDTO.getDescription());
-            // 카테고리는 코드를 지우지 않는 이상 무조건 값을 써야함
-            // 이유 공부 + 예외 처리, 다른 값들은 비워 놓으면 안되도록 처리
-
-        // 요청한 데이터로 수정한 product 엔티티를 productResponseDTO로 변경 후, 반환
-        return ProductMapper.toProductResponseDTO(foundProduct);
+        if (orderRequestDTO.getEmail() != null) {
+            getOrder.changeEmail(orderRequestDTO.getEmail());
         }
 
-    // 상품 삭제
-    public void removeProduct(Long productId) {
+        if (orderRequestDTO.getAddress() != null) {
+            getOrder.changeAddress(orderRequestDTO.getAddress());
+        }
 
-        // restz의 상품 service 참고하면, 예외처리 가능
-        productRepository.deleteById(productId);
+        if (orderRequestDTO.getPostcode() != null) {
+            getOrder.changePostcode(orderRequestDTO.getPostcode());
+        }
+
+        List<OrderItem> orderItems = orderRequestDTO.getOrderItems().stream()
+                .map(orderItemRequestDTO -> {
+                    Optional<Product> product = productRepository.findById(orderItemRequestDTO.getProductId());
+                    Product getProduct = product.get();
+
+                    return OrderItemMapper.toOrderItemEntity(orderItemRequestDTO, getProduct);
+                }).collect(Collectors.toList());
+
+        getOrder.getOrderItems().clear();
+        getOrder.getOrderItems().addAll(orderItems);
+
+        Order updatedOrder = orderRepository.save(getOrder);
+        return OrderMapper.toOrderResponseDTO(updatedOrder);
     }
 
-    // 상품 전체 조회
-    public List<ProductResponseDTO> readAllProducts() {
+    // 주문 삭제
+    public void deleteOrder(Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+//                .orElseThrow(() -> new IllegalArgumentException("해당 주문을 찾을 수 없습니다."));
 
-        // JPA 기본 메서드 findAll()로 모든 상품을 조회(매개변수 필요 X)
-        List<Product> products = productRepository.findAll();
-
-        // Product 엔티티 리스트 -> ProductResponseDTO 리스트로 변환
-        List<ProductResponseDTO> productResponseDTOList =
-                products.stream()
-                        .map(ProductMapper::toProductResponseDTO)
-                        .toList();
-
-        /*  위 코드와 밑 코드는 기능적으로 동일하지만,
-            밑 코드가 가독성이 떨어짐
-        List<ProductResponseDTO> productResponseDTOList =
-                productRepository.findAll()
-                                .stream()
-                                .map(ProductMapper::toProductResponseDTO)
-                                .toList();
-
-         */
-
-        return productResponseDTOList;
+        orderRepository.delete(order.get());
     }
+
+
+    // 전체 주문 조회
+    public List<OrderResponseDTO> readAllOrders() {
+        return orderRepository.findAll().stream()
+                .map(OrderMapper::toOrderResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    // 주문 페이징
 
 }
-
-
-    // 상품 페이지(페이징)
-//    public Page<ProductResponseDTO> getList(Pageable pageable) {//상품 목록
-//        try {
-//            Sort sort = Sort.by("productId").descending();
-//            Pageable pageable = pageRequestDTO.getPageable(sort);
-//            return productRepository.list(pageable);
-//
-//        }catch (Exception e) {
-//            log.error("--- " + e.getMessage());
-//            throw ProductException.NOT_FETCHED.get();  //예외가 발생한 경우 Product NOT_FETCHED 메시지로 예외 발생시키기
-//        }
-//    }
-
-

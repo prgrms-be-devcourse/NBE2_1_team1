@@ -1,7 +1,7 @@
 package edu.example.coffeeproject.controller_api;
 
-import edu.example.coffeeproject.DTO.ProductRequestDTO;
-import edu.example.coffeeproject.DTO.ProductResponseDTO;
+import edu.example.coffeeproject.DTO.request.ProductRequestDTO;
+import edu.example.coffeeproject.DTO.response.ProductResponseDTO;
 import edu.example.coffeeproject.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -76,7 +76,7 @@ public class ProductController {
         return ResponseEntity.ok(Map.of("delete result ", "실패"));
     }
 
-    @GetMapping("/products")
+    @GetMapping("/List")
     public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
 
         List<ProductResponseDTO> productResponseDTOList = productService.readAllProducts();

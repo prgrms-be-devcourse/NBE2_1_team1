@@ -2,7 +2,7 @@ package edu.example.coffeeproject.search;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
-import edu.example.coffeeproject.DTO.ProductResponseDTO;
+import edu.example.coffeeproject.DTO.response.ProductResponseDTO;
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.entity.QProduct;
 import org.springframework.data.domain.Page;

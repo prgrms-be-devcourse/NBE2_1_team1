@@ -14,7 +14,6 @@ import java.util.TreeSet;
 @Entity
 @Table(name="tbl_order")
 @Getter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,20 +22,30 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
     private String postcode;
 
+    @Column(nullable = false)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
-    // 이해 필요
+    // 필드 설정 이해 필요
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-    // 배송 상황을 알리는 상태 여러가지 OrderStatus에 추가
+    @Builder.Default
+    private OrderStatus orderStatus = OrderStatus.ORDER_PREPARING;
 
+    @Column(nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
+
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
@@ -53,7 +62,4 @@ public class Order {
         this.postcode = postcode;
     }
 
-    public void changeOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
 }
