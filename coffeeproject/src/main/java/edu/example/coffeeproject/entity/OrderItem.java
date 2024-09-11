@@ -27,11 +27,11 @@ public class OrderItem {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private Long price;
+    private int price;
     private int quantity;
 
 
-    public Long totalPrice() {
+    public int totalPrice() {
         return this.price * this.quantity;
     }
 }

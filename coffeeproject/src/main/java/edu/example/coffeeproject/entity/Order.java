@@ -5,11 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @ToString
 @Builder
 @AllArgsConstructor
@@ -27,8 +27,14 @@ public class Order {
     private String postcode;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+
+
+    public void complete(){
+        orderStatus = OrderStatus.Y;
+    }
 }

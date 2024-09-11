@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 public class ProductDTO {
@@ -25,12 +27,17 @@ public class ProductDTO {
     @NotEmpty
     private String description;
 
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
+
     public ProductDTO(Product product){
         this.productId = product.getProductId();
         this.category = product.getCategory();
         this.productName = product.getProductName();
         this.price = product.getPrice();
         this.description = product.getDescription();
+        this.createDate = product.getCreateDate();
+        this.updateDate = product.getUpdateDate();
     }
 
     public Product toEntity(){
