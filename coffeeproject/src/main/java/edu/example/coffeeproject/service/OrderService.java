@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional // Order엔티티의 OrderItems가 지연 로딩되는 에러 해결 (LazyInitializationException)
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -51,7 +51,8 @@ public class OrderService {
         existingOrder.setAddress(orderDTO.getAddress());
         existingOrder.setPostcode(orderDTO.getPostcode());
 
-        existingOrder.getOrderItems().clear();
+        existingOrder.getOrderItems().clear(); // 업데이트 오류 해결을 위한 상품 목록 초기화
+        // 하나의 주문에 속한 여러 상품을 for문으로 순회하여 상품 하나씩 업데이트
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
             OrderItem newItem = new OrderItem();
             newItem.setProductId(itemDTO.getProductId());

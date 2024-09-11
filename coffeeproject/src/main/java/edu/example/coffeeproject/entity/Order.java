@@ -32,6 +32,7 @@ public class Order {
     @Column(columnDefinition = "ENUM('ACCEPTED','CANCELLED','PAYMENT_CONFIRMED','PENDING','READY_FOR_DELIVERY','SETTLED','SHIPPED') DEFAULT 'PENDING'")
     private OrderStatus orderStatus = OrderStatus.PENDING;
 
+    // mappedBy를 사용하여 OrderItems 테이블에 orderId 외래키 컬럼이 존재함을 명시
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -40,6 +41,7 @@ public class Order {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    // Order엔티티를 DB에 저장시 OrderStatus 디폴트 값을 PENDING으로 보장
     @PrePersist
     public void prePersist() {
         if (this.orderStatus == null) {

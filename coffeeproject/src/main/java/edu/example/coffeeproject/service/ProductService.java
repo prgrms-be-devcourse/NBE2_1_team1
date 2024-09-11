@@ -18,9 +18,9 @@ public class ProductService {
     }
 
     public ProductDTO saveProduct(ProductDTO productDTO) {
-        Product product = productDTO.toEntity();
+        Product product = productDTO.toEntity(); // DTO에서 꼭 필요한 정보만 product 엔티티에 저장
         Product savedProduct = productRepository.save(product);
-        return ProductDTO.fromEntity(savedProduct);
+        return ProductDTO.fromEntity(savedProduct); // DTO를 사용하여 product엔티티에서 외부로 반환해도 괜찮은 정보들만 반환
     }
 
     public List<ProductDTO> getAllProducts() {
@@ -37,7 +37,7 @@ public class ProductService {
     }
 
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
-        Product existingProduct = productRepository.findById(productId)
+        Product existingProduct = productRepository.findById(productId) // Product 영속성 엔티티
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
         existingProduct.setProductName(productDTO.getProductName());
@@ -45,6 +45,7 @@ public class ProductService {
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setCategory(productDTO.getCategory());
 
+        // 기존의 상품 데이터에 대한 갱신을 마친 다음 DTO를 사용하여 꼭 필요한 정보만 반환
         Product updatedProduct = productRepository.save(existingProduct);
         return ProductDTO.fromEntity(updatedProduct);
     }
