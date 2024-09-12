@@ -1,8 +1,13 @@
 package edu.example.coffeeproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -14,10 +19,13 @@ import java.util.TreeSet;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$",
+            message = "유효한 이메일 주소를 입력해주세요.")
     private String email;
     private String address;
     private String postCode;
@@ -27,6 +35,11 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+
+    @LastModifiedDate
+    private LocalDateTime orderDate;
+
 
     public void changeEmail(String email) {
         this.email = email;

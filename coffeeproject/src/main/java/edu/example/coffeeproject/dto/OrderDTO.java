@@ -8,6 +8,8 @@ import edu.example.coffeeproject.exception.ProductException;
 import edu.example.coffeeproject.repository.OrderItemRepository;
 import edu.example.coffeeproject.repository.OrderRepository;
 import edu.example.coffeeproject.repository.ProductRepository;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +24,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
+    @Schema(description = "주문 Id")
     private Long orderId;
-    @NotEmpty
+    @Schema(description = "주문자 이메일", example = "aaa.naver.com")
+    @NotBlank(message = "이메일은 비어있을 수 없습니다.")
     private String email;
+    @Schema(description = "배송지")
+    @NotBlank(message = "주소는 비어있을 수없습니다..")
     private String address;
+    @Schema(description = "우편 번호")
+    @NotBlank(message = "우편번호는 비어있을 수 없습니다.")
     private String postCode;
+    @Schema(description = "주문 상품")
+    @NotEmpty(message = "주문 상품은 비어있을 수 없습니다.")
     private List<OrderItemDTO> orderItems;
     private OrderStatus orderStatus;
 
