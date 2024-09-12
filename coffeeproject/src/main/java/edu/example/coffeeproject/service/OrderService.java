@@ -12,9 +12,11 @@ import edu.example.coffeeproject.repository.OrderRepository;
 import edu.example.coffeeproject.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,14 +69,23 @@ public class OrderService {
         return new OrderDTO(order);
     }
 
-    //주문 확인
+    //전체 주문 확인
     public List<Order> findAll(){
         return orderRepository.findAll();
     }
 
+    //email로 주문 확인
+    public List<Order> findEmail(String email){
+        return orderRepository.findByEmail(email);
+    }
 
     //배송 완료 상태 변경
-    public void completeOrder(){
-
+    //cron - "초 분 시 일 월 요일"
+    @Scheduled(cron = "0 00 14 * * 1-5", zone = "Asia/Seoul")
+    public void updateStatus(){
+        LocalDateTime endDateTime = LocalDateTime.now().withHour(14).withMinute(0).withSecond(0).withNano(0);
+        orderRepository.updateOrderStatus(endDateTime);
     }
+
+    public void delete(Long orderId){ orderRepository.deleteById(orderId);}
 }

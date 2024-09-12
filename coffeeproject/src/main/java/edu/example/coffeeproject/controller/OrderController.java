@@ -1,6 +1,7 @@
 package edu.example.coffeeproject.controller;
 
 import edu.example.coffeeproject.dto.OrderDTO;
+import edu.example.coffeeproject.entity.Order;
 import edu.example.coffeeproject.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/orders")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
     private final OrderService orderService;
 
@@ -25,5 +26,24 @@ public class OrderController {
     public ResponseEntity<List<OrderDTO>> findAllOrder(){
         List<OrderDTO> orders = orderService.findAll().stream().map(OrderDTO::new).toList();
         return ResponseEntity.ok().body(orders);
+    }
+
+    //OrderStatus 수동 변경
+    @PostMapping("/update-orderstatus")
+    public ResponseEntity<String> updateStatusManual(){
+        orderService.updateStatus();
+        return ResponseEntity.ok("Order status updated - 'Y'");
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<List<Order>> findEmailOrder( @PathVariable("email") String email){
+        List<Order> orderList = orderService.findEmail(email);
+        return ResponseEntity.ok().body(orderList);
+    }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable("orderId") Long orderId){
+        orderService.delete(orderId);
+        return ResponseEntity.ok().build();
     }
 }

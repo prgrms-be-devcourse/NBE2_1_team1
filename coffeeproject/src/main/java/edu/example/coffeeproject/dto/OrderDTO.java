@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class OrderDTO {
 
     private List<OrderItemDTO>  items;
     private OrderStatus orderStatus;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
 
 
@@ -33,6 +36,8 @@ public class OrderDTO {
         this.address = order.getAddress();
         this.postcode = order.getPostcode();
         this.orderStatus = order.getOrderStatus();
+        this.createDate = order.getCreateDate();
+        this.updateDate = order.getUpdateDate();
 
         List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
         for(OrderItem orderItem : order.getOrderItems()){

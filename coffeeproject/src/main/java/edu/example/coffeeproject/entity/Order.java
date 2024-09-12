@@ -1,10 +1,14 @@
 package edu.example.coffeeproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.example.coffeeproject.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,13 +30,19 @@ public class Order {
     private String address;
     private String postcode;
 
-    @OneToMany(mappedBy = "order")
+    @JsonIgnore
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
 
+    @CreatedDate
+    private LocalDateTime createDate;
+
+    @LastModifiedDate
+    private LocalDateTime updateDate;
 
     public void complete(){
         orderStatus = OrderStatus.Y;
