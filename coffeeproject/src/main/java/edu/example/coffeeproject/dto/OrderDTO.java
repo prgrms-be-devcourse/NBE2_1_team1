@@ -47,4 +47,14 @@ public class OrderDTO {
                 .updatedAt(order.getUpdatedAt())
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "이메일 = '" + email + '\'' +
+                ", 우편번호 = '" + address + '\'' +
+                ", 우편번호 = '" + postcode + '\'' +
+                ", 주문상세 = '" + orderItems + '\'' +
+                '}';
+    }
 }

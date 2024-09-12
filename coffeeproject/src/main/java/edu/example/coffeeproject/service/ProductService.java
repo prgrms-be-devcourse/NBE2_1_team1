@@ -4,9 +4,9 @@ import edu.example.coffeeproject.dto.ProductDTO;
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.exception.ProductNotFoundException;
 import edu.example.coffeeproject.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -23,11 +23,9 @@ public class ProductService {
         return ProductDTO.fromEntity(savedProduct); // DTO를 사용하여 product엔티티에서 외부로 반환해도 괜찮은 정보들만 반환
     }
 
-    public List<ProductDTO> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(ProductDTO::fromEntity)
-                .collect(Collectors.toList());
+    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(ProductDTO::fromEntity);
     }
 
     public ProductDTO getProductById(Long productId) {

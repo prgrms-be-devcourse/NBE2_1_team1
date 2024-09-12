@@ -33,7 +33,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "orderId", nullable = false)
-    @JsonIgnore // `OrderItem`에서 `Order`를 직렬화하지 않도록 설정
+    @JsonIgnore // `OrderItem`에서 `Order`를 직렬화하지 않도록 설정, 순환 참조 방지
     private Order order;
 
     @CreatedDate

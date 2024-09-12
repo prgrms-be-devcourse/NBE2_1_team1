@@ -22,8 +22,6 @@ public class OrderItemDTO {
     public OrderItem toEntity() {
         return OrderItem.builder()
                 .productId(this.productId)
-                .category(this.category)
-                .price(this.price)
                 .quantity(this.quantity)
                 .build();
     }
@@ -38,5 +36,15 @@ public class OrderItemDTO {
                 .createdAt(orderItem.getCreatedAt())
                 .updatedAt(orderItem.getUpdatedAt())
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "상품번호 = '" + productId + '\'' +
+                ", 가격 = " + price +
+                ", 카테고리 = '" + category + '\'' +
+                ", 수량 = " + quantity +
+                '}';
     }
 }
