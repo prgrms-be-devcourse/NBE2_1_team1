@@ -2,7 +2,6 @@ package edu.example.coffeeproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CollectionIdJavaType;
 
 @Entity
 @Table(name = "tbl_order_item", indexes=@Index(columnList = "order_id"))

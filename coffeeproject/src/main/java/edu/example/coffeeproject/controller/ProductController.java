@@ -2,7 +2,6 @@ package edu.example.coffeeproject.controller;
 
 import edu.example.coffeeproject.dto.PageRequestDTO;
 import edu.example.coffeeproject.dto.ProductDTO;
-import edu.example.coffeeproject.dto.ProductListDTO;
 import edu.example.coffeeproject.exception.ProductException;
 import edu.example.coffeeproject.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,10 +9,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.convert.PeriodUnit;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -48,7 +45,7 @@ public class ProductController {
     })
     @Parameter(name = "pageRequestDTO", description = "조회를 원하는 페이지와 페이지당 게시물 수")
     @GetMapping  //상품 목록 조회
-    public ResponseEntity<Page<ProductListDTO>> getList(@Validated PageRequestDTO pageRequestDTO) {
+    public ResponseEntity<Page<ProductDTO>> getList(@Validated PageRequestDTO pageRequestDTO) {
         log.info("getList -----" + pageRequestDTO);
 
         return ResponseEntity.ok(productService.getList(pageRequestDTO));

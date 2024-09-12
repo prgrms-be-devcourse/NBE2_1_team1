@@ -3,14 +3,11 @@ package edu.example.coffeeproject.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 @Entity
 @Table(name="tbl_order")

@@ -1,13 +1,9 @@
 package edu.example.coffeeproject.service;
 
 import edu.example.coffeeproject.dto.OrderDTO;
-import edu.example.coffeeproject.dto.OrderItemDTO;
 import edu.example.coffeeproject.entity.Order;
-import edu.example.coffeeproject.entity.OrderItem;
 import edu.example.coffeeproject.entity.OrderStatus;
-import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.exception.OrderException;
-import edu.example.coffeeproject.exception.ProductException;
 import edu.example.coffeeproject.repository.OrderItemRepository;
 import edu.example.coffeeproject.repository.OrderRepository;
 import edu.example.coffeeproject.repository.ProductRepository;
@@ -53,6 +49,8 @@ public class OrderService {
         return new OrderDTO(order);
     }
 
+
+
     public List<OrderDTO> read(String email) {     //email로 주문 목록 조회
         List<Order> orders = orderRepository.findByEmailList(email).get();
         if (!orders.isEmpty()) {
@@ -73,7 +71,7 @@ public class OrderService {
         return orderRepository.findAll().stream().map(OrderDTO::new).toList();
     }
 
-    public OrderDTO userModify(OrderDTO orderDTO) {
+    public OrderDTO userModify(OrderDTO orderDTO) { //사용자가 주문 정보를 수정할 때 사용하는 기능(주소, 우편번호 수정 가능)
         Optional<Order> foundOrder = orderRepository.findById(orderDTO.getOrderId());
         Order order = foundOrder.orElseThrow(OrderException.NOT_FOUND::get);
 

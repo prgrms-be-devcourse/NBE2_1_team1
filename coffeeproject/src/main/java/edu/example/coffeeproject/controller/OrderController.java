@@ -3,13 +3,10 @@ package edu.example.coffeeproject.controller;
 import edu.example.coffeeproject.dto.OrderDTO;
 import edu.example.coffeeproject.dto.OrderItemDTO;
 import edu.example.coffeeproject.exception.OrderException;
-import edu.example.coffeeproject.exception.ProductException;
 import edu.example.coffeeproject.service.OrderItemService;
 import edu.example.coffeeproject.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -38,6 +35,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.addOrder(orderDTO));
     }
 
+
     @Operation(summary = "주문 정보 조회", description = "이메일로 주문 정보를 조회합니다.")
     @Parameter(name = "email", description = "주문조회를 원하는 email 입력")
     @GetMapping("/{email}")  //이메일로 목록 조회
@@ -55,7 +53,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findAll());
     }
 
-    @Operation(summary = "주문 정보 수정(사용자)", description = "주문번호로 주문 정보를 수정합니다.")
+    @Operation(summary = "주문 정보 수정(사용자)", description = "주문번호로 주문 정보(주소, 우편번호)를 수정합니다.")
     @Parameter(name = "orderId", description = "수정을 원하는 주문 번호")
     @PutMapping("/{orderId}")  //주문 정보 수정(사용자)
     public ResponseEntity<OrderDTO> userModify(@PathVariable Long orderId,
@@ -76,6 +74,10 @@ public class OrderController {
     public ResponseEntity<OrderDTO> adminModify(@PathVariable Long orderId, @RequestBody OrderDTO orderDTO) {
         log.info("--- adminModify()");
         log.info("--- orderId: " + orderId);
+
+        if(!orderId.equals(orderDTO.getOrderId())) { //존재하지 않는 productId인 경우
+            throw OrderException.NOT_FOUND.get();
+        }
 
         return ResponseEntity.ok(orderService.adminModify(orderDTO));
     }
@@ -99,6 +101,4 @@ public class OrderController {
 
         return ResponseEntity.ok(Map.of("result", "success"));
     }
-
-
 }

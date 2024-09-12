@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +19,11 @@ public class ProductDTO {
     @NotBlank(message = "상품 이름은 비어있을 수 없습니다.")
     private String productName;
     @Schema(description = "상품 카테고리")
-    @NotBlank(message = "상품 카테고리는 비어있을 수 없습니다.")
-    private String category;
+    @NotNull(message = "상품 카테고리는 비어있을 수 없습니다.")
+    private Category category;
     @Schema(description = "상품 가격")
     @Min(0)
-    @NotEmpty(message = "상품 가격은 비어있을 수 없습니다.")
+    @NotNull(message = "상품 가격은 비어있을 수 없습니다.")
     private int price;
     @Schema(description = "상품 설명")
     @NotBlank(message = "상품 설명은 비어있을 수 없습니다.")
@@ -31,7 +32,7 @@ public class ProductDTO {
     public ProductDTO(Product product) {
         this.productId = product.getProductId();
         this.productName = product.getProductName();
-        this.category = product.getCategory().name();
+        this.category = product.getCategory();
         this.price = product.getPrice();
         this.description = product.getDescription();
     }

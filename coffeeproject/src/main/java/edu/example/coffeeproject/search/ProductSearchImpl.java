@@ -3,7 +3,6 @@ package edu.example.coffeeproject.search;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import edu.example.coffeeproject.dto.ProductDTO;
-import edu.example.coffeeproject.dto.ProductListDTO;
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.entity.QProduct;
 import org.springframework.data.domain.Page;
@@ -17,15 +16,15 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
     public ProductSearchImpl() {super(Product.class);}
 
     @Override
-    public Page<ProductListDTO> list(Pageable pageable) {
+    public Page<ProductDTO> list(Pageable pageable) {
         QProduct product = QProduct.product;
 
         JPQLQuery<Product> query = from(product);
 
 
-        JPQLQuery<ProductListDTO> dtoQuery
+        JPQLQuery<ProductDTO> dtoQuery
                 = query.select(Projections.bean(
-                ProductListDTO.class,
+                ProductDTO.class,
                 product.productId,
                 product.productName,
                 product.category,
@@ -33,7 +32,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 product.description));
 
         getQuerydsl().applyPagination(pageable, dtoQuery);    //페이징
-        List<ProductListDTO> productList = dtoQuery.fetch();   //쿼리 실행
+        List<ProductDTO> productList = dtoQuery.fetch();   //쿼리 실행
         long count = dtoQuery.fetchCount();                //레코드 수 조회
 
         return new PageImpl<>(productList, pageable, count);

@@ -26,14 +26,14 @@ public class PageRequestDTO {
     //3. 필드 설명
     @Schema(description = "한 페이지에 표시할 게시물의 수")
     @Builder.Default
-    @Min(3)
+    @Min(5)
     @Max(100)
-    private int size = 3;  //한 페이지 게시물 수 - 3 미만이면 3으로 지정
+    private int size = 5;  //한 페이지 게시물 수 - 5 미만이면 5으로 지정
 
     //페이지번호, 페이지 게시물 수, 정렬 순서를 Pageable 객체로 반환
     public Pageable getPageable(Sort sort) {
         int pageNum = page < 0 ? 1 : page - 1;
-        int sizeNum = size <= 10 ? 10 : size;
+        int sizeNum = size <= 5 ? 5 : size;
         return PageRequest.of(pageNum, sizeNum, sort);
     }
 }

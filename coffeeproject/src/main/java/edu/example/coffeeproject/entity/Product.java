@@ -7,7 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name="tbl_product")
@@ -44,11 +43,11 @@ public class Product {
         this.description = description;
     }
 
-    public void changeCategory(String categoryName) {
+    public void changeCategory(Category category) {
         try {
-            this.category = Category.valueOf(categoryName);
+            this.category = category;
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid category: " + categoryName);
+            throw new RuntimeException("Invalid category: " + category);
         }
     }
 }

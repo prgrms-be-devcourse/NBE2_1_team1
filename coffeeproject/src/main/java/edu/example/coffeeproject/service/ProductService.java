@@ -2,7 +2,6 @@ package edu.example.coffeeproject.service;
 
 import edu.example.coffeeproject.dto.PageRequestDTO;
 import edu.example.coffeeproject.dto.ProductDTO;
-import edu.example.coffeeproject.dto.ProductListDTO;
 import edu.example.coffeeproject.entity.Product;
 import edu.example.coffeeproject.exception.ProductException;
 import edu.example.coffeeproject.repository.ProductRepository;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,7 +39,7 @@ public class ProductService {
         return new ProductDTO(product);
     }
 
-    public Page<ProductListDTO> getList(PageRequestDTO pageRequestDTO) {//상품 목록
+    public Page<ProductDTO> getList(PageRequestDTO pageRequestDTO) {//상품 목록
         try {
             Sort sort = Sort.by("productId").descending();
             Pageable pageable = pageRequestDTO.getPageable(sort);
