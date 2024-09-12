@@ -12,15 +12,14 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import java.util.List;
 
-public class ProductSearchImpl extends QuerydslRepositorySupport implements ProductSearch {
-    public ProductSearchImpl() {super(Product.class);}
+public class SearchImpl extends QuerydslRepositorySupport implements Search {
+    public SearchImpl() {super(Product.class);}
 
     @Override
     public Page<ProductResponseDTO> list(Pageable pageable) {
         QProduct product = QProduct.product;
 
         JPQLQuery<Product> query = from(product);
-
 
         JPQLQuery<ProductResponseDTO> dtoQuery
                 = query.select(Projections.bean(
@@ -31,10 +30,11 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 product.price,
                 product.description));
 
-        getQuerydsl().applyPagination(pageable, dtoQuery);    //페이징
-        List<ProductResponseDTO> productList = dtoQuery.fetch();   //쿼리 실행
-        long count = dtoQuery.fetchCount();                //레코드 수 조회
+        getQuerydsl().applyPagination(pageable, dtoQuery);         // 페이징
+        List<ProductResponseDTO> productList = dtoQuery.fetch();   // 쿼리 실행
+        long count = dtoQuery.fetchCount();                        // 레코드 수 조회
 
         return new PageImpl<>(productList, pageable, count);
     }
+
 }

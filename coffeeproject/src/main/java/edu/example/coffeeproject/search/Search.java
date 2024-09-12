@@ -4,6 +4,7 @@ import edu.example.coffeeproject.DTO.response.ProductResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ProductSearch {
+public interface Search {
+
     Page<ProductResponseDTO> list(Pageable pageable);
 }

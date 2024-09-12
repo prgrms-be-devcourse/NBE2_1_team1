@@ -3,7 +3,6 @@ package edu.example.coffeeproject.controller_api;
 import edu.example.coffeeproject.DTO.request.OrderRequestDTO;
 import edu.example.coffeeproject.DTO.response.OrderResponseDTO;
 import edu.example.coffeeproject.service.OrderService;
-import edu.example.coffeeproject.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +27,9 @@ public class OrderController {
     }
 
     // 주문 조회
-    @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponseDTO> getOrder(@Validated @PathVariable Long orderId) {
-        return ResponseEntity.ok(orderService.readOrder(orderId));
+    @GetMapping("/{email}")
+    public ResponseEntity<List<OrderResponseDTO>> getOrder(@Validated @PathVariable String email) {
+        return ResponseEntity.ok(orderService.readOrder(email));
     }
 
     // 주문 변경
@@ -46,7 +45,7 @@ public class OrderController {
     public ResponseEntity<Map<String, String>> deleteOrder(@Validated @PathVariable Long orderId) {
         orderService.deleteOrder(orderId);
 
-        return ResponseEntity.ok(Map.of("delete result ", "실패"));
+        return ResponseEntity.ok(Map.of("delete result ", "성공"));
     }
 
     // 전체 주문 조회

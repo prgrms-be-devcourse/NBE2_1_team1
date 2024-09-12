@@ -26,7 +26,7 @@ public class Product {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-//    @Builder.Default -> 상품 등록할 때 필수 입력 사항이라 필요 X
+//  @Builder.Default -> 상품 등록할 때 필수 입력 사항이라 필요 X
     private Category category = Category.COFFEE_BEAN_PACKAGE;
 
     @Column(nullable = false)

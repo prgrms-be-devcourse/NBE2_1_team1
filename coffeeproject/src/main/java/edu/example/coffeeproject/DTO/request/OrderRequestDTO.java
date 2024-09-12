@@ -16,14 +16,12 @@ public class OrderRequestDTO {
     @Email(message = "올바른 이메일 형식을 입력해주세요.")
     private String email;
 
-    @NotBlank(message = "값을 입력해주세요.")
+    @NotBlank(message = "주소를 입력해주세요.")
     private String address;
 
-    @NotBlank(message = "값을 입력해주세요.")
+    @NotBlank(message = "우편 번호를 입력해주세요.")
     private String postcode;
 
-    @NotNull(message = "값을 입력해주세요.")
+    @NotNull(message = "상품을 선택(입력)해주세요.")
     private List<OrderItemRequestDTO> orderItems;
 }
-
-// @Email -> "@" 기호와 "."이 포함된 형식의 이메일 값만 유효하다고 판단

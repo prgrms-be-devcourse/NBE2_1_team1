@@ -34,6 +34,8 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final StringPath postcode = createString("postcode");
 
+    public final NumberPath<Integer> totalPrice = createNumber("totalPrice", Integer.class);
+
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public QOrder(String variable) {

@@ -1,6 +1,7 @@
 package edu.example.coffeeproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -42,6 +43,9 @@ public class Order {
     @Builder.Default
     private OrderStatus orderStatus = OrderStatus.ORDER_PREPARING;
 
+    @Min(0)
+    private int totalPrice;
+
     @Column(nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
@@ -60,6 +64,14 @@ public class Order {
 
     public void changePostcode(String postcode) {
         this.postcode = postcode;
+    }
+
+    public void changeOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void changeTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
 }
